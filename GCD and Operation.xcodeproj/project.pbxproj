@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,9 @@
 		50A34A0925C35FE3000B3EA3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A34A0825C35FE3000B3EA3 /* ViewController.swift */; };
 		50A34A0E25C35FEB000B3EA3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50A34A0D25C35FEB000B3EA3 /* Assets.xcassets */; };
 		50A34A1125C35FEB000B3EA3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50A34A0F25C35FEB000B3EA3 /* LaunchScreen.storyboard */; };
+		50A34A2125C37053000B3EA3 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A34A2025C37053000B3EA3 /* PhotosViewController.swift */; };
+		50A34A2525C3717C000B3EA3 /* PhotosCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A34A2425C3717B000B3EA3 /* PhotosCollectionViewCell.swift */; };
+		50F1308825C578DA0062B518 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F1308725C578DA0062B518 /* DetailViewController.swift */; };
 		F7363D334866CC4FAF9DD33C /* Pods_GCD_and_Operation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E434C252B20A92785FC364DD /* Pods_GCD_and_Operation.framework */; };
 /* End PBXBuildFile section */
 
@@ -22,6 +25,9 @@
 		50A34A0D25C35FEB000B3EA3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		50A34A1025C35FEB000B3EA3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		50A34A1225C35FEB000B3EA3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		50A34A2025C37053000B3EA3 /* PhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
+		50A34A2425C3717B000B3EA3 /* PhotosCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosCollectionViewCell.swift; sourceTree = "<group>"; };
+		50F1308725C578DA0062B518 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		D29EC3FB39622FEBB9AC7149 /* Pods-GCD and Operation.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GCD and Operation.debug.xcconfig"; path = "Target Support Files/Pods-GCD and Operation/Pods-GCD and Operation.debug.xcconfig"; sourceTree = "<group>"; };
 		E434C252B20A92785FC364DD /* Pods_GCD_and_Operation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GCD_and_Operation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -38,6 +44,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		505D959025C583290039CE66 /* PhotosCollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				50A34A2025C37053000B3EA3 /* PhotosViewController.swift */,
+				50A34A2425C3717B000B3EA3 /* PhotosCollectionViewCell.swift */,
+			);
+			path = PhotosCollectionView;
+			sourceTree = "<group>";
+		};
 		50A349F825C35FE3000B3EA3 = {
 			isa = PBXGroup;
 			children = (
@@ -61,6 +76,8 @@
 			children = (
 				50A34A0425C35FE3000B3EA3 /* AppDelegate.swift */,
 				50A34A0825C35FE3000B3EA3 /* ViewController.swift */,
+				505D959025C583290039CE66 /* PhotosCollectionView */,
+				50F1308725C578DA0062B518 /* DetailViewController.swift */,
 				50A34A0D25C35FEB000B3EA3 /* Assets.xcassets */,
 				50A34A0F25C35FEB000B3EA3 /* LaunchScreen.storyboard */,
 				50A34A1225C35FEB000B3EA3 /* Info.plist */,
@@ -74,7 +91,6 @@
 				D29EC3FB39622FEBB9AC7149 /* Pods-GCD and Operation.debug.xcconfig */,
 				2A6A682EC73D42E357088356 /* Pods-GCD and Operation.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -199,6 +215,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50A34A2125C37053000B3EA3 /* PhotosViewController.swift in Sources */,
+				50F1308825C578DA0062B518 /* DetailViewController.swift in Sources */,
+				50A34A2525C3717C000B3EA3 /* PhotosCollectionViewCell.swift in Sources */,
 				50A34A0925C35FE3000B3EA3 /* ViewController.swift in Sources */,
 				50A34A0525C35FE3000B3EA3 /* AppDelegate.swift in Sources */,
 			);
@@ -269,7 +288,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -324,7 +343,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
