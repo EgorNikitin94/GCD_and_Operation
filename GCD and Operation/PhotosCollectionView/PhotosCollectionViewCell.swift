@@ -15,7 +15,13 @@ final class PhotosCollectionViewCell: UICollectionViewCell {
     public var imageURL: URL? {
         didSet{
             photoImageView.image = nil
-            updateUI()
+            do {
+                try updateUI()
+            } catch AppErrors.notImageURL {
+                print(AppErrors.notImageURL.errorDescription!)
+            } catch {
+                print("We have another problem")
+            }
         }
     }
     
@@ -37,14 +43,16 @@ final class PhotosCollectionViewCell: UICollectionViewCell {
     }
     
     //MARK: Configure UI
-    private func updateUI() {
-        guard let url = imageURL else { return }
+    private func updateUI() throws {
+        guard let url = imageURL else { throw AppErrors.notImageURL }
         DispatchQueue.global(qos: .userInitiated).async {
-            let contentsOfURL = try? Data(contentsOf: url)
+            guard let contentsOfURL = try? Data(contentsOf: url) else {
+                print(AppErrors.invalidModel.errorDescription!)
+                return
+            }
             DispatchQueue.main.async {
                 if url == self.imageURL {
-                    guard let imageData = contentsOfURL else { return }
-                    self.photoImageView.image = UIImage(data: imageData)
+                    self.photoImageView.image = UIImage(data: contentsOfURL)
                 }
             }
         }

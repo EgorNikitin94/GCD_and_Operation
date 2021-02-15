@@ -69,24 +69,69 @@ final class PhotosViewController: UIViewController {
     }
     
     private func loadingImagesUrl() {
-
-        guard let url = apiUrl else {return}
-        let dataTask = URLSession.shared.dataTask(with: url) { [weak self] (data, responce, error) in
-
-            guard let data = data else { return }
-
-            let json = try! JSON(data: data)
-
-            guard let array = json.array else { return }
-
-            self?.objects = array.compactMap({
-                URL(string: $0["url"].rawString() ?? "unknown")
+        
+        DispatchQueue.global().async {
+            
+            self.getURL(completion: { (result) in
+                switch result {
+                case .success(let array):
+                    self.objects = array
+                case .failure(let error):
+                    print(error.errorDescription!)
+                }
             })
-
+            
         }
-        dataTask.resume()
     }
-
+    
+    private func getURL(completion: (Result<[URL], AppErrors>) -> Void) {
+        
+        var isLoadingSuccess = false
+      
+        let urlArray = try? getArray()
+        
+        if urlArray != nil {
+            isLoadingSuccess = true
+        } else {
+            print(AppErrors.invalidModel.errorDescription!)
+        }
+        
+        if isLoadingSuccess {
+            completion(.success(urlArray!))
+        } else {
+            completion(.failure(.notFoundURLs))
+            showAlert()
+        }
+        
+    }
+    
+    private func getArray() throws -> [URL] {
+        
+        guard let url = apiUrl else { throw AppErrors.notFoundURLs }
+        
+        let data = try? Data(contentsOf: url)
+        
+        guard let dataUnwrapping = data else { throw AppErrors.invalidModel }
+        
+        guard let json = try? JSON(data: dataUnwrapping) else { throw AppErrors.invalidModel }
+        
+        guard let array = json.array else { throw AppErrors.invalidModel }
+        
+        let urlArray = array.compactMap({
+            URL(string: $0["url"].rawString() ?? "unknown")
+        })
+        return urlArray
+    }
+    
+    private func showAlert() {
+        let alertVC = UIAlertController(title: nil, message: "No internet connection", preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "Ok", style: .default) {_ in
+            preconditionFailure("No internet connection")
+        }
+        alertVC.addAction(okButton)
+        present(alertVC, animated: true, completion: nil)
+    }
+    
     @objc private func infoButtonTapped() {
         let detailViewController = DetailViewController()
         detailViewController.apiUrl = apiUrl

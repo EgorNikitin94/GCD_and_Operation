@@ -42,8 +42,18 @@ final class ViewController: UIViewController {
     }
     
     @objc private func tapShowImagesButton() {
-        let photosViewController = PhotosViewController()
-        navigationController?.pushViewController(photosViewController, animated: true)
+        
+        UIView.animate(withDuration: 0.3) {
+            self.showImagesButton.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
+        } completion: { (bool) in
+            self.showImagesButton.transform = .identity
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            let photosViewController = PhotosViewController()
+            self.navigationController?.pushViewController(photosViewController, animated: true)
+        }
+        
     }
 
 }
