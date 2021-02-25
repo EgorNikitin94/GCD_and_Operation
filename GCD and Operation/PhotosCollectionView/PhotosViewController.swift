@@ -88,13 +88,18 @@ final class PhotosViewController: UIViewController {
     
     private func getURL(completion: (Result<[URL], AppErrors>) -> Void) {
       
-        guard let urlArray = try? getArray() else {
+        do {
+            let urlArray = try getArray()
+            completion(.success(urlArray))
+        } catch AppErrors.notFoundURLs {
             completion(.failure(.notFoundURLs))
-            showAlert()
-            return
+            showAlert(error: AppErrors.notFoundURLs)
+        } catch AppErrors.invalidModel {
+            completion(.failure(.invalidModel))
+            showAlert(error: AppErrors.invalidModel)
+        } catch {
+            print("We have an unknown error")
         }
-        
-        completion(.success(urlArray))
         
     }
     
@@ -114,8 +119,8 @@ final class PhotosViewController: UIViewController {
         return urlArray
     }
     
-    private func showAlert() {
-        let alertVC = UIAlertController(title: nil, message: AppErrors.noInternetConnection.errorDescription, preferredStyle: .alert)
+    private func showAlert(error: AppErrors) {
+        let alertVC = UIAlertController(title: nil, message: error.errorDescription, preferredStyle: .alert)
         let okButton = UIAlertAction(title: "Ok", style: .default)
         alertVC.addAction(okButton)
         present(alertVC, animated: true, completion: nil)
