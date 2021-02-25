@@ -77,7 +77,9 @@ final class PhotosViewController: UIViewController {
                 case .success(let array):
                     self.objects = array
                 case .failure(let error):
-                    print(error.errorDescription!)
+                    if let errorDescription = error.errorDescription {
+                        print(errorDescription)
+                    }
                 }
             })
             
@@ -85,23 +87,14 @@ final class PhotosViewController: UIViewController {
     }
     
     private func getURL(completion: (Result<[URL], AppErrors>) -> Void) {
-        
-        var isLoadingSuccess = false
       
-        let urlArray = try? getArray()
-        
-        if urlArray != nil {
-            isLoadingSuccess = true
-        } else {
-            print(AppErrors.invalidModel.errorDescription!)
-        }
-        
-        if isLoadingSuccess {
-            completion(.success(urlArray!))
-        } else {
+        guard let urlArray = try? getArray() else {
             completion(.failure(.notFoundURLs))
             showAlert()
+            return
         }
+        
+        completion(.success(urlArray))
         
     }
     
@@ -109,11 +102,9 @@ final class PhotosViewController: UIViewController {
         
         guard let url = apiUrl else { throw AppErrors.notFoundURLs }
         
-        let data = try? Data(contentsOf: url)
+        let data = try Data(contentsOf: url)
         
-        guard let dataUnwrapping = data else { throw AppErrors.invalidModel }
-        
-        guard let json = try? JSON(data: dataUnwrapping) else { throw AppErrors.invalidModel }
+        let json = try JSON(data: data)
         
         guard let array = json.array else { throw AppErrors.invalidModel }
         
@@ -124,10 +115,8 @@ final class PhotosViewController: UIViewController {
     }
     
     private func showAlert() {
-        let alertVC = UIAlertController(title: nil, message: "No internet connection", preferredStyle: .alert)
-        let okButton = UIAlertAction(title: "Ok", style: .default) {_ in
-            preconditionFailure("No internet connection")
-        }
+        let alertVC = UIAlertController(title: nil, message: AppErrors.noInternetConnection.errorDescription, preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "Ok", style: .default)
         alertVC.addAction(okButton)
         present(alertVC, animated: true, completion: nil)
     }

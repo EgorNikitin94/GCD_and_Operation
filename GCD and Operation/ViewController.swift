@@ -47,9 +47,6 @@ final class ViewController: UIViewController {
             self.showImagesButton.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
         } completion: { (bool) in
             self.showImagesButton.transform = .identity
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             let photosViewController = PhotosViewController()
             self.navigationController?.pushViewController(photosViewController, animated: true)
         }

@@ -47,7 +47,9 @@ class DetailViewController: UIViewController {
                 case .success(let array):
                     self.urlObjects = array
                 case .failure(let error):
-                    print(error.errorDescription!)
+                    if let errorDescription = error.errorDescription {
+                        print(errorDescription)
+                    }
                 }
             })
             
@@ -56,22 +58,14 @@ class DetailViewController: UIViewController {
     
     private func getURL(completion: (Result<[String], AppErrors>) -> Void) {
         
-        var isLoadingSuccess = false
-      
-        let urlArray = try? getArray()
-        
-        if urlArray != nil {
-            isLoadingSuccess = true
-        } else {
-            print(AppErrors.invalidModel.errorDescription!)
-        }
-        
-        if isLoadingSuccess {
-            completion(.success(urlArray!))
-        } else {
+        guard let urlArray = try? getArray() else {
             completion(.failure(.notFoundURLs))
             showAlert()
+            return
         }
+        
+        completion(.success(urlArray))
+        
         
     }
     
@@ -79,11 +73,9 @@ class DetailViewController: UIViewController {
         
         guard let url = apiUrl else { throw AppErrors.notFoundURLs }
         
-        let data = try? Data(contentsOf: url)
+        let data = try Data(contentsOf: url)
         
-        guard let dataUnwrapping = data else { throw AppErrors.invalidModel }
-        
-        guard let json = try? JSON(data: dataUnwrapping) else { throw AppErrors.invalidModel }
+        let json = try JSON(data: data)
         
         guard let array = json.array else { throw AppErrors.invalidModel }
         
@@ -94,10 +86,8 @@ class DetailViewController: UIViewController {
     }
     
     private func showAlert() {
-        let alertVC = UIAlertController(title: nil, message: "No internet connection", preferredStyle: .alert)
-        let okButton = UIAlertAction(title: "Ok", style: .default) {_ in
-            preconditionFailure("No internet connection")
-        }
+        let alertVC = UIAlertController(title: nil, message: AppErrors.noInternetConnection.errorDescription, preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "Ok", style: .default)
         alertVC.addAction(okButton)
         present(alertVC, animated: true, completion: nil)
     }
@@ -127,11 +117,13 @@ extension DetailViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellID)
-        cell?.selectionStyle = .none
-        cell?.textLabel?.textAlignment = .center
-        cell?.textLabel?.text = urlObjects[indexPath.row]
-        return cell!
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID) else {
+            return UITableViewCell()
+        }
+        cell.selectionStyle = .none
+        cell.textLabel?.textAlignment = .center
+        cell.textLabel?.text = urlObjects[indexPath.row]
+        return cell
     }
     
     
